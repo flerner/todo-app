@@ -1,34 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useRef, useState } from "react"
+import "./App.css"
+import TodoTask from "./Components/TodoTask.jsx"
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useState([])
+  const userInput = useRef("")
+  const id = useRef(0)
 
+  const handleAdd = (e) => {
+    e.preventDefault()
+    const todo = { userInput: userInput.current.value, id: id.current }
+    id.current++
+    setTodos((prevState) => {
+      return [...prevState, todo]
+    })
+  }
+  const handleDelete = (id) => {
+    setTodos((prevState) => {
+      return prevState.filter((t) => t.id !== id)
+    })
+  }
+  const handleEdit = (id, newText) => {
+    setTodos((prevState) =>
+      prevState.map((todo) =>
+        todo.id === id ? { ...todo, userInput: newText } : todo
+      )
+    )
+  }
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <main>
+      <h1>Todo App</h1>
+      <form className='form'>
+        <input
+          name='query'
+          type='text'
+          ref={userInput}
+          placeholder='Do homework, Clean up... '
+        />
+        <button type='submit' onClick={handleAdd}>
+          Add
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      </form>
+      <ul>
+        {todos &&
+          todos.map((todo) => {
+            return (
+              <li key={todo.id}>
+                <TodoTask
+                  text={todo.userInput}
+                  handleDelete={() => handleDelete(todo.id)}
+                  handleEdit={(newText) => handleEdit(todo.id, newText)}
+                />
+              </li>
+            )
+          })}
+      </ul>
+    </main>
   )
 }
 

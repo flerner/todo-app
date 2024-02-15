@@ -28,32 +28,37 @@ function App() {
   }
   return (
     <main>
-      <h1>Todo App</h1>
-      <form className='form'>
-        <input
-          name='query'
-          type='text'
-          ref={userInput}
-          placeholder='Do homework, Clean up... '
-        />
-        <button type='submit' onClick={handleAdd}>
-          Add
-        </button>
-      </form>
-      <ul>
-        {todos &&
-          todos.map((todo) => {
-            return (
-              <li key={todo.id}>
-                <TodoTask
-                  text={todo.userInput}
-                  handleDelete={() => handleDelete(todo.id)}
-                  handleEdit={(newText) => handleEdit(todo.id, newText)}
-                />
-              </li>
-            )
-          })}
-      </ul>
+      <div className='header'>
+        <h1>Todo App</h1>
+        <form className='form'>
+          <input
+            name='query'
+            type='text'
+            ref={userInput}
+            placeholder='Do homework, Clean up... '
+            maxLength={15}
+          />
+          <button type='submit' onClick={handleAdd}>
+            Add
+          </button>
+        </form>
+      </div>
+      <div className='todo-list'>
+        <ul>
+          {todos &&
+            todos.map((todo) => {
+              return (
+                <li key={todo.id}>
+                  <TodoTask
+                    text={todo.userInput}
+                    handleDelete={() => handleDelete(todo.id)}
+                    handleEdit={(newText) => handleEdit(todo.id, newText)}
+                  />
+                </li>
+              )
+            })}
+        </ul>
+      </div>
     </main>
   )
 }

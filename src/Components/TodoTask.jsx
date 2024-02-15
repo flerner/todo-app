@@ -1,5 +1,7 @@
 import { MdEdit } from "react-icons/md"
 import { CiCircleRemove } from "react-icons/ci"
+import { GiConfirmed } from "react-icons/gi"
+
 import "./TodoTask.css"
 import { useState } from "react"
 function TodoTask({ text, handleDelete, handleEdit }) {
@@ -13,18 +15,25 @@ function TodoTask({ text, handleDelete, handleEdit }) {
     <>
       <div className='todo-task'>
         {editing ? (
-          <div>
+          <div className='edit-todo'>
             <input
+              maxLength={15}
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
             ></input>
-            <button onClick={() => handleEditButton(newMessage)}>Conf</button>
           </div>
         ) : (
           <h2>{text}</h2>
         )}
 
         <div className='actions'>
+          {editing ? (
+            <button onClick={() => handleEditButton(newMessage)}>
+              <GiConfirmed />
+            </button>
+          ) : (
+            <></>
+          )}
           <button onClick={() => setEditing(!editing)}>
             <MdEdit></MdEdit>
           </button>
@@ -38,6 +47,3 @@ function TodoTask({ text, handleDelete, handleEdit }) {
 }
 
 export default TodoTask
-
-/*
-() => handleEdit("lalala")*/
